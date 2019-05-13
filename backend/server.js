@@ -1,9 +1,8 @@
-const mongoose = require('mongoose');
 const express = require('express');
 var cors = require('cors');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-//const Data = require(“./data”);
+
 
 const router =require('./routes/router');
 
@@ -19,7 +18,7 @@ app.use(bodyParser.json());
 app.use(logger("dev"));
 
 // append /api for our http requests
-app.use("/api", router);
+app.use("/location", router);
 
 // launch our backend into a port
 app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));

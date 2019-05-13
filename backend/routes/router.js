@@ -1,12 +1,14 @@
 const express = require("express");
 const router= express.Router();
-const Data= require('../db/models/data');
+const {Location}= require('../db/models/data');
+
 require('../db/mongoose'); // Connect to DB
+
 
 // this is our get method
 // this method fetches all available data in our database
 router.get("/getData", (req, res) => {
-    Data.find((err, data) => {
+    Location.find({},(err, data) => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true, data: data });
     });
@@ -15,8 +17,8 @@ router.get("/getData", (req, res) => {
 // this is our update method
 // this method overwrites existing data in our database
 router.post("/updateData", (req, res) => {
-    const { id, update } = req.body;
-    Data.findOneAndUpdate(id, update, err => {
+    const { name, update } = req.body;
+    Location.findOneAndUpdate(name, update, err => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true });
     });
@@ -25,8 +27,8 @@ router.post("/updateData", (req, res) => {
 // this is our delete method
 // this method removes existing data in our database
 router.delete("/deleteData", (req, res) => {
-    const { id } = req.body;
-    Data.findOneAndDelete(id, err => {
+    const { name } = req.body;
+    Location.findOneAndDelete(name, err => {
         if (err) return res.send(err);
         return res.json({ success: true });
     });
@@ -35,19 +37,19 @@ router.delete("/deleteData", (req, res) => {
 // this is our create methid
 // this method adds new data in our database
 router.post("/putData", (req, res) => {
-    let data = new Data();
+    let location = new Location();
 
-    const { id, message } = req.body;
+    const { name, address } = req.body;
 
-    if ((!id && id !== 0) || !message) {
+    if ((!name) || !address) {
         return res.json({
             success: false,
             error: "INVALID INPUTS"
         });
     }
-    data.message = message;
-    data.id = id;
-    data.save(err => {
+    location.name = name;
+    location.address = address;
+    location.save(err => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true });
     });

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "react": "^16.8.6"
+    "react": "^16.8.6",
+    "mongoose": "latest"
   },
   "devDependencies": {},
   "scripts": {

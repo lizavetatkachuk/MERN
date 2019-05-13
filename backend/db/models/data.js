@@ -1,15 +1,14 @@
 const mongoose= require('mongoose');
-const Schema= mongoose.Schema;
-
-const DataSchema= new Schema(
+const { Schema } = mongoose;
+const LocationSchema= new mongoose.Schema(
     {
-        id: Number,
-        message: String
+        name : String,
+        address: String
 
     },
     { timestamps : false}
 )
 
-const Data = mongoose.model("Data", DataSchema);
+const Location = mongoose.model("Location", LocationSchema);
 
-module.exports = {Data};
+module.exports = {Location};

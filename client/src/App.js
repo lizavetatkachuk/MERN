@@ -4,7 +4,9 @@ class App extends Component {
     state = {
         data: [],
         id: 0,
+        name: null,
         message: null,
+        address: null,
         intervalIsSet: false,
         idToDelete: null,
         idToUpdate: null,
@@ -24,47 +26,42 @@ class App extends Component {
         }
     }
     getDataFromDb = () => {
-        fetch("http://localhost:3001/api/getData")
+        fetch("http://localhost:3001/location/getData")
             .then(data => data.json())
             .then(res => this.setState({ data: res.data }));
     };
-    putDataToDB = message => {
-        let currentIds = this.state.data.map(data => data.id);
-        let idToBeAdded = 0;
-        while (currentIds.includes(idToBeAdded)) {
-            ++idToBeAdded;
-        }
+    putDataToDB = (name, address) => {
 
-        axios.post("http://localhost:3001/api/putData", {
-            id: idToBeAdded,
-            message: message
+        axios.post("http://localhost:3001/location/putData", {
+            name: name,
+            address: address
         });
 
     };
-    deleteFromDB = idTodelete => {
+    deleteFromDB = name => {
         let objIdToDelete = null;
         this.state.data.forEach(dat => {
-            if (dat.id == idTodelete) {
+            if (dat.name == name) {
                 objIdToDelete = dat._id;
             }
         });
 
-        axios.delete("http://localhost:3001/api/deleteData", {
+        axios.delete("http://localhost:3001/location/deleteData", {
             data: {
-                id: objIdToDelete
+                name: name
             }
         });
     };
-    updateDB = (idToUpdate, updateToApply) => {
+    updateDB = (name, updateToApply) => {
         let objIdToUpdate = null;
         this.state.data.forEach(dat => {
-            if (dat.id == idToUpdate) {
+            if (dat.name == name) {
                 objIdToUpdate = dat._id;
             }
         });
 
-        axios.post("http://localhost:3001/api/updateData", {
-            id: objIdToUpdate,
+        axios.post("http://localhost:3001/location/updateData", {
+            name: objIdToUpdate,
             update: { message: updateToApply }
         });
     };
@@ -75,23 +72,29 @@ class App extends Component {
     <div>
         <ul>
             {data.length <= 0
-                ? "NO DB ENTRIES YET"
+                ? "NO Locations YET"
                 : data.map(dat => (
                     <li style={{ padding: "10px" }} key={data.message}>
-                        <span style={{ color: "gray" }}> id: </span> {dat.id} <br />
-                        <span style={{ color: "gray" }}> data: </span>
-                        {dat.message}
+                        <span style={{ color: "gray" }}> place: </span> {dat.name} <br />
+                        <span style={{ color: "gray" }}> address : </span>
+                        {dat.address}
                     </li>
                 ))}
         </ul>
         <div style={{ padding: "10px" }}>
             <input
                 type="text"
-                onChange={e => this.setState({ message: e.target.value })}
-                placeholder="add something in the database"
+                onChange={e => this.setState({ address: e.target.value })}
+                placeholder="you can propose a location"
                 style={{ width: "200px" }}
             />
-            <button onClick={() => this.putDataToDB(this.state.message)}>
+            <input
+                type="text"
+                onChange={e => this.setState({ name: e.target.value })}
+                placeholder="type the name of the location here"
+                style={{ width: "200px" }}
+            />
+            <button onClick={() => this.putDataToDB(this.state.name, this.state.address)}>
                 ADD
             </button>
         </div>
@@ -99,10 +102,10 @@ class App extends Component {
             <input
                 type="text"
                 style={{ width: "200px" }}
-                onChange={e => this.setState({ idToDelete: e.target.value })}
-                placeholder="put id of item to delete here"
+                onChange={e => this.setState({ name: e.target.value })}
+                placeholder="put the name the location to delete here"
             />
-            <button onClick={() => this.deleteFromDB(this.state.idToDelete)}>
+            <button onClick={() => this.deleteFromDB(this.state.name)}>
                 DELETE
             </button>
         </div>
@@ -110,18 +113,18 @@ class App extends Component {
             <input
                 type="text"
                 style={{ width: "200px" }}
-                onChange={e => this.setState({ idToUpdate: e.target.value })}
-                placeholder="id of item to update here"
+                onChange={e => this.setState({ name: e.target.value })}
+                placeholder="name of the location to update here"
             />
             <input
                 type="text"
                 style={{ width: "200px" }}
                 onChange={e => this.setState({ updateToApply: e.target.value })}
-                placeholder="put new value of the item here"
+                placeholder="put new address here"
             />
             <button
                 onClick={() =>
-                    this.updateDB(this.state.idToUpdate, this.state.updateToApply)
+                    this.updateDB(this.state.name, this.state.updateToApply)
                 }
             >
                 UPDATE

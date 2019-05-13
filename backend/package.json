@@ -9,6 +9,9 @@
   },
   "author": "",
   "license": "ISC",
+  "dependencies": {
+  "mongoose": "latest"
+},
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
