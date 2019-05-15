@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import "../public/index.css"
 class App extends Component {
     state = {
         data: [],
@@ -69,6 +70,7 @@ class App extends Component {
     {
         const { data } = this.state;
         return (
+
     <div>
         <ul>
             {data.length <= 0
@@ -130,7 +132,9 @@ class App extends Component {
                 UPDATE
             </button>
         </div>
+            <div id="mapid"></div>
     </div>
+
 );
 }
 }
