@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "../public/index.css"
+import {Map, TileLayer} from 'react-leaflet';
 class App extends Component {
     state = {
         data: [],
@@ -11,7 +12,9 @@ class App extends Component {
         intervalIsSet: false,
         idToDelete: null,
         idToUpdate: null,
-        objectToUpdate: null
+        objectToUpdate: null,
+        center: [52.4345016, 30.9754009],
+        zoom: 13,
     };
     componentDidMount() {
         this.getDataFromDb();
@@ -132,7 +135,12 @@ class App extends Component {
                 UPDATE
             </button>
         </div>
-            <div id="mapid"></div>
+        <Map center={this.state.center} zoom={this.state.zoom}>
+            <TileLayer
+                attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
+            />
+        </Map>
     </div>
 
 );
