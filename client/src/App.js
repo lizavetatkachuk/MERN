@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "../public/index.css"
-import {Map, TileLayer} from 'react-leaflet';
+import {Map,Marker, TileLayer,Popup} from 'react-leaflet';
 class App extends Component {
     state = {
         data: [],
@@ -14,7 +14,7 @@ class App extends Component {
         idToUpdate: null,
         objectToUpdate: null,
         center: [52.4345016, 30.9754009],
-        zoom: 13,
+        zoom: 15,
     };
     componentDidMount() {
         this.getDataFromDb();
@@ -140,6 +140,9 @@ class App extends Component {
                 attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.osm.org/{z}/{x}/{y}.png"
             />
+            <Marker position={this.state.center}>
+                <Popup>A pretty CSS3 popup.<br />Easily customizable.</Popup>
+            </Marker>
         </Map>
     </div>
 
