@@ -10,7 +10,8 @@ require('../db/mongoose'); // Connect to DB
 router.get("/getData", (req, res) => {
     Location.find({},(err, data) => {
         if (err) return res.json({ success: false, error: err });
-        return res.json({ success: true, data: data });
+        return res.json({ success: true, markers: data });
+
     });
 });
 
@@ -39,9 +40,9 @@ router.delete("/deleteData", (req, res) => {
 router.post("/putData", (req, res) => {
     let location = new Location();
 
-    const { name, address } = req.body;
+    const { marker, name, address } = req.body;
 
-    if ((!name) || !address) {
+    if ((!name) || (!address) ||(!marker)) {
         return res.json({
             success: false,
             error: "INVALID INPUTS"
@@ -49,6 +50,8 @@ router.post("/putData", (req, res) => {
     }
     location.name = name;
     location.address = address;
+    location.lat=marker.lat;
+    location.lng=marker.lng;
     location.save(err => {
         if (err) return res.json({ success: false, error: err });
         return res.json({ success: true });

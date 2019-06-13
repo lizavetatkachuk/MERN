@@ -3,7 +3,9 @@ const { Schema } = mongoose;
 const LocationSchema= new mongoose.Schema(
     {
         name : String,
-        address: String
+        address: String,
+        lat :Number,
+        lng: Number
 
     },
     { timestamps : false}
